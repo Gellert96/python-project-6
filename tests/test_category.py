@@ -20,3 +20,26 @@ def test_category_count():
     Category("Veggies", "desc", [])
 
     assert Category.category_count == 2
+
+
+def test_add_product():
+        Category.product_count = 0
+
+        category = Category("Fruits", "desc", [])
+
+        product = Product("Apple", "Fresh apple", 100, 5)
+
+        category.add_product(product)
+
+        assert len(category.products) == 1
+        assert Category.product_count == 1
+
+
+def test_products_property():
+    product = Product("Apple", "Fresh apple", 100, 5)
+
+    category = Category("Fruits", "desc", [product])
+
+    expected = ["Apple, 100 руб. Остаток: 5 шт."]
+
+    assert category.products == expected
