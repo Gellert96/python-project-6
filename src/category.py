@@ -16,7 +16,7 @@ class Category:
             for product in products:
                 self.add_product(product)
 
-    def add_product(self, product: Product):
+    def add_product(self, product: Product) -> None:
         self.__products.append(product)
         Category.product_count += 1
 
