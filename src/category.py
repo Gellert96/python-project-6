@@ -5,7 +5,7 @@ class Category:
     category_count = 0
     product_count = 0
 
-    def __init__(self, name, description, products=None):
+    def __init__(self, name: str, description: str, products=None):
         self.name = name
         self.description = description
         self.__products = []
@@ -22,8 +22,27 @@ class Category:
 
     @property
     def products(self):
-        return [str(p) for p in self.__products]
+        return [str(product) for product in self.__products]
 
     def __str__(self):
-        total_quantity = sum(p.quantity for p in self.__products)
+        total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
+
+    def __iter__(self):
+        return CategoryIterator(self)
+
+
+class CategoryIterator:
+    def __init__(self, category: Category):
+        self._products = category._Category__products
+        self._index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._index < len(self._products):
+            product = self._products[self._index]
+            self._index += 1
+            return product
+        raise StopIteration
