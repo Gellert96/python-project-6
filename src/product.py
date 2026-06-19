@@ -2,16 +2,29 @@ class Product:
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
-        self.__price = price
+        self._price = price
         self.quantity = quantity
 
+    # price через property (если у тебя уже было — оставь, но вот правильно)
     @property
     def price(self):
-        return self.__price
+        return self._price
 
     @price.setter
     def price(self, value):
-        if value <= 0:
-            print("Цена не должна быть нулевая или отрицательная")
+        if value > 0:
+            self._price = value
         else:
-            self.__price = value
+            print("Цена не должна быть нулевая или отрицательная")
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        if not isinstance(other, Product):
+            return NotImplemented
+
+        return (
+            self.price * self.quantity +
+            other.price * other.quantity
+        )
