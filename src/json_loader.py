@@ -1,7 +1,7 @@
 import json
 
-from src.product import Product
 from src.category import Category
+from src.product import Product
 
 
 def load_data(path: str):
@@ -18,14 +18,14 @@ def load_data(path: str):
                 name=product_data["name"],
                 description=product_data["description"],
                 price=product_data["price"],
-                quantity=product_data["quantity"]
+                quantity=product_data["quantity"],
             )
             products.append(product)
 
         category = Category(
             name=category_data["name"],
             description=category_data["description"],
-            products=products
+            products=products,
         )
 
         categories.append(category)

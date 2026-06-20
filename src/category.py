@@ -17,32 +17,16 @@ class Category:
                 self.add_product(product)
 
     def add_product(self, product: Product):
+        if not isinstance(product, Product):
+            raise TypeError
+
         self.__products.append(product)
         Category.product_count += 1
 
     @property
     def products(self):
-        return [str(product) for product in self.__products]
+        return [str(p) for p in self.__products]
 
     def __str__(self):
-        total_quantity = sum(product.quantity for product in self.__products)
-        return f"{self.name}, количество продуктов: {total_quantity} шт."
-
-    def __iter__(self):
-        return CategoryIterator(self)
-
-
-class CategoryIterator:
-    def __init__(self, category: Category):
-        self._products = category._Category__products
-        self._index = 0
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self._index < len(self._products):
-            product = self._products[self._index]
-            self._index += 1
-            return product
-        raise StopIteration
+        total = sum(p.quantity for p in self.__products)
+        return f"{self.name}, количество продуктов: {total} шт."
