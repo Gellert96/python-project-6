@@ -1,13 +1,13 @@
+from src.base_entity import BaseEntity
 from src.product import Product
 
 
-class Category:
+class Category(BaseEntity):
     category_count = 0
     product_count = 0
 
     def __init__(self, name: str, description: str, products=None):
-        self.name = name
-        self.description = description
+        super().__init__(name, description)
         self.__products = []
 
         Category.category_count += 1
