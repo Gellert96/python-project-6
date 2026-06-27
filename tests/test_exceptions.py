@@ -2,6 +2,7 @@ import pytest
 
 from src.category import Category
 from src.exceptions import ZeroQuantityError
+from src.order import Order
 from src.product import Product
 
 
@@ -16,6 +17,15 @@ def test_product_zero_quantity_error():
 def test_product_zero_quantity_error_is_value_error():
     with pytest.raises(ValueError):
         Product("Бракованный товар", "Неверное количество", 1000.0, 0)
+
+
+def test_zero_quantity_error_message():
+    error = ZeroQuantityError()
+
+    assert (
+        str(error)
+        == "Товар с нулевым количеством не может быть добавлен"
+    )
 
 
 def test_category_middle_price():
@@ -53,6 +63,38 @@ def test_add_product_zero_quantity_error(capsys):
 
     with pytest.raises(ZeroQuantityError):
         category.add_product(product)
+
+    captured = capsys.readouterr()
+
+    assert "Товар с нулевым количеством не может быть добавлен" in captured.out
+    assert "Обработка добавления товара завершена" in captured.out
+
+
+def test_add_product_type_error():
+    category = Category("Test", "Test category", [])
+
+    with pytest.raises(TypeError):
+        category.add_product("not product")
+
+
+def test_order_success(capsys):
+    product = Product("Phone", "Desc", 1000, 2)
+
+    order = Order(product, 2)
+
+    captured = capsys.readouterr()
+
+    assert order.total_price == 2000
+    assert "Товар добавлен" in captured.out
+    assert "Обработка добавления товара завершена" in captured.out
+
+
+def test_order_zero_quantity_error(capsys):
+    product = Product("Phone", "Desc", 1000, 1)
+    product.quantity = 0
+
+    with pytest.raises(ZeroQuantityError):
+        Order(product, 1)
 
     captured = capsys.readouterr()
 

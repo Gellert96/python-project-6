@@ -1,17 +1,31 @@
 from src.base_entity import BaseEntity
+from src.exceptions import ZeroQuantityError
 from src.product import Product
 
 
 class Order(BaseEntity):
     def __init__(self, product: Product, quantity: int):
-        if not isinstance(product, Product):
-            raise TypeError
+        try:
+            if not isinstance(product, Product):
+                raise TypeError
 
-        self.product = product
-        self.quantity = quantity
-        self.total_price = product.price * quantity
+            if product.quantity == 0 or quantity == 0:
+                raise ZeroQuantityError
 
-        super().__init__(product.name, product.description)
+            self.product = product
+            self.quantity = quantity
+            self.total_price = product.price * quantity
+
+            super().__init__(product.name, product.description)
+
+            print("Товар добавлен")
+
+        except ZeroQuantityError as error:
+            print(error)
+            raise
+
+        finally:
+            print("Обработка добавления товара завершена")
 
     def __str__(self):
         return (
