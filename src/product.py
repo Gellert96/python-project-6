@@ -1,9 +1,13 @@
 from src.base_product import BaseProduct
+from src.exceptions import ZeroQuantityError
 from src.print_mixin import PrintMixin
 
 
 class Product(PrintMixin, BaseProduct):
     def __init__(self, name, description, price, quantity):
+        if quantity == 0:
+            raise ZeroQuantityError
+
         self.name = name
         self.description = description
         self.price = price
